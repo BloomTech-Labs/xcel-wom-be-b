@@ -5,7 +5,11 @@ exports.up = (knex) => {
     table.string('address');
     table.string('imageUrl');
     table.integer('company').unsigned();
-    table.foreign('company').references('companies.id');
+    table
+      .foreign('company')
+      .references('companies.id')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
   });
 };
 

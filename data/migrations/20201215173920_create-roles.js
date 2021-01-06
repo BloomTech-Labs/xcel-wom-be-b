@@ -4,7 +4,11 @@ exports.up = (knex) => {
     table.string('name');
     table.integer('userLevel');
     table.integer('company').unsigned();
-    table.foreign('company').references('companies.id');
+    table
+      .foreign('company')
+      .references('companies.id')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
   });
 };
 

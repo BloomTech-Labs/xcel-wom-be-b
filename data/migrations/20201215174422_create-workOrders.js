@@ -4,17 +4,41 @@ exports.up = (knex) => {
     table.string('title');
     table.string('description');
     table.integer('company').unsigned();
-    table.foreign('company').references('companies.id');
+    table
+      .foreign('company')
+      .references('companies.id')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
     table.integer('property').unsigned();
-    table.foreign('property').references('properties.id');
+    table
+      .foreign('property')
+      .references('properties.id')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
     table.string('createdBy');
-    table.foreign('createdBy').references('profiles.id');
+    table
+      .foreign('createdBy')
+      .references('profiles.id')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
     table.string('assignedTo');
-    table.foreign('assignedTo').references('profiles.id');
+    table
+      .foreign('assignedTo')
+      .references('profiles.id')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
     table.integer('priority').unsigned();
-    table.foreign('priority').references('priority.id');
+    table
+      .foreign('priority')
+      .references('priority.id')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
     table.integer('status').unsigned();
-    table.foreign('status').references('status.id');
+    table
+      .foreign('status')
+      .references('status.id')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
     table.timestamps(true, true);
   });
 };
