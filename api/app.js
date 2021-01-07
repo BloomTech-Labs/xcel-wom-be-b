@@ -55,7 +55,7 @@ app.use(
   ['/property', '/properties', '/*/property', '/*/properties'],
   propertyRouter
 );
-app.use(['/company', '/companies'], companyRouter);
+app.use('/companies', companyRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
