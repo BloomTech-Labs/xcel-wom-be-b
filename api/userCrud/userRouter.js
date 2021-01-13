@@ -20,7 +20,8 @@ const userIdCheck = require('../middleware/userIdCheck');
  *        description: company object
  *        content:
  *          application/json:
- *            $ref: '#/components/schemas/company'
+ *            schema:
+ *              $ref: '#/components/schemas/company'
  *      401:
  *        $ref: '#/components/responses/UnauthorizedError'
  *      403:

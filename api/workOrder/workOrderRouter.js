@@ -322,6 +322,33 @@ module.exports = router;
  *      schema:
  *        type: integer
  *  schemas:
+ *    user:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: string
+ *          description: UUID from Okta
+ *        name:
+ *          type: string
+ *        email:
+ *          type: string
+ *        avatarUrl:
+ *          type: string
+ *          description: the public URL of the user's avatar image
+ *        role:
+ *          type: integer
+ *          description: a reference to the 'roles' table
+ *        company:
+ *          type: integer
+ *          description: a reference to the 'companies' table
+ *      example:
+ *        id: 'd376de0577681ca93614'
+ *        name: 'Louie Smith'
+ *        email: 'louie@example.com'
+ *        avatarUrl:
+ *           'https://s3.amazonaws.com/uifaces/faces/twitter/hermanobrother/128.jpg'
+ *        role: 1
+ *        company: 2
  *    company:
  *      type: object
  *      properties:
