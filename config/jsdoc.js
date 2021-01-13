@@ -20,7 +20,7 @@ module.exports = {
         description: 'Operations for profile',
       },
       {
-        name: 'orders',
+        name: 'workOrder',
         description: 'Operations for Work Orders',
       },
     ],

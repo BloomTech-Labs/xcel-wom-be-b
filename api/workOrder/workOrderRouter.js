@@ -34,8 +34,6 @@ router.get('/', authRequired, function (req, res) {
   const companyId = req.params.companyId;
   if (companyId > 0) {
     WorkOrders.findByCompany(companyId)
-      // WorkOrders.findBy({ 'wo.company': companyId })
-      // WorkOrders.findAll()
       .then((workOrders) => {
         if (workOrders.length > 0) {
           res.status(200).json(workOrders);
@@ -46,7 +44,8 @@ router.get('/', authRequired, function (req, res) {
       .catch((err) => {
         res.status(500).json({ error: err.message });
       });
-  } else {
+  } else if (process.env.NODE_ENV === 'development') {
+    // on the development server, `/company/0/orders` will give you all orders
     WorkOrders.findAll()
       .then((workOrders) => {
         if (workOrders.length > 0) {
@@ -174,7 +173,7 @@ router.post('/', authRequired, async (req, res) => {
  *      - workOrder
  *      - order
  *    requestBody:
- *      description: WorkOrder object to to be updated
+ *      description: WorkOrder object to to be updated or portion
  *      content:
  *        application/json:
  *          schema:
