@@ -14,6 +14,7 @@ const router = express.Router({ mergeParams: true });
  *    tags:
  *      - workOrder
  *      - order
+ *      - company
  *    responses:
  *      200:
  *        description: array of workOrders
@@ -308,6 +309,14 @@ module.exports = router;
  *      name: id
  *      in: path
  *      description: ID of the company to search for workOrders
+ *      required: true
+ *      example: 1
+ *      schema:
+ *        type: integer
+ *    userId:
+ *      name: id
+ *      in: path
+ *      description: ID of the user to return
  *      required: true
  *      example: 1
  *      schema:
