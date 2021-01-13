@@ -9,7 +9,7 @@ var router = express.Router();
  *    tags:
  *      - status
  *    produces:
- *      - applicaiton/json
+ *      - application/json
  *    responses:
  *      200:
  *        description: status is up

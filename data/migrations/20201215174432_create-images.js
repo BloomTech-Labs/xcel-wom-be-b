@@ -3,9 +3,17 @@ exports.up = (knex) => {
     table.increments('id').notNullable().unique().primary();
     table.string('url');
     table.string('user');
-    table.foreign('user').references('profiles.id');
+    table
+      .foreign('user')
+      .references('profiles.id')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
     table.integer('workOrder').unsigned();
-    table.foreign('workOrder').references('workOrders.id');
+    table
+      .foreign('workOrder')
+      .references('workOrders.id')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
   });
 };
 

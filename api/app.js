@@ -24,6 +24,8 @@ const profileRouter = require('./profile/profileRouter');
 const propertyRouter = require('./property/propertyRouter');
 const companyRouter = require('./company/companyRouter');
 
+const userRouter = require('./userCrud/userRouter');
+const workOrderRouter = require('./workOrder/workOrderRouter');
 const app = express();
 
 process.on('unhandledRejection', (reason, p) => {
@@ -56,6 +58,22 @@ app.use(
   propertyRouter
 );
 app.use('/companies', companyRouter);
+app.use('/company', userRouter);
+app.use(
+  [
+    '/workOrders?',
+    '/*/workOrders?',
+    '/*/*/workOrders?',
+    '/*/*/*/workOrders?',
+    '/*/*/*/*/workOrders?',
+    '/orders?',
+    '/*/orders?',
+    '/*/*/orders?',
+    '/*/*/*/orders?',
+    '/*/*/*/*/orders?',
+  ],
+  workOrderRouter
+);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
