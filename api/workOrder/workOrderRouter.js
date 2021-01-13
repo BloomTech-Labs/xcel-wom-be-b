@@ -1,158 +1,19 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
 const WorkOrders = require('./workOrderModel');
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 /**
  * @swagger
- * components:
- *  schemas:
- *    WorkOrder:
- *      type: object
- *      properties:
- *        id:
- *          type: integer
- *          description: autoincrements
- *        title:
- *          type: string
- *        description:
- *          type: string
- *          description: an explanation of what needs done
- *        created_at:
- *          type: timestamp
- *        updated_at:
- *          type: timestamp
- *        company:
- *          type: object
- *          properties:
- *            id:
- *              type: integer
- *              description: autoincrements
- *            name:
- *              type: string
- *        property:
- *          type: object
- *          properties:
- *            id:
- *              type: integer
- *              description: autoincrements
- *            name:
- *              type: string
- *            address:
- *              type: string
- *              description: The physical address of the property
- *            imageUrl:
- *              type: string
- *              description: The public URL of an image of the property
- *            company:
- *              type: integer
- *              description:
- *                This is a foreign key to Companies.id. It should
- *                point to the same company referenced above.
- *        images:
- *          type: array
- *          items:
- *             type: object
- *             properties:
- *                id:
- *                  type: integer
- *                  description: autoincrements
- *                url:
- *                  type: string
- *                  description: The public URL of the image
- *                user:
- *                  type: string
- *                  description: The userId of the user who uploaded the image
- *                workOrder:
- *                  type: integer
- *                  description: A reference to this workOrder
- *        comments:
- *          type: array
- *          items:
- *             type: object
- *             properties:
- *                id:
- *                  type: integer
- *                  description: autoincrements
- *                comment:
- *                  type: string
- *                  description: The body of the comment
- *                user:
- *                  type: string
- *                  description: The userId of the user who wrote the comment
- *                workOrder:
- *                  type: integer
- *                  description: A reference to this workOrder
- *        createdBy:
- *          type: string
- *          description: This is a foreign key to Profiles.id (Okta Id)
- *        assignedTo:
- *          type: string
- *          description:
- *            This is a foreign key to Profiles.id (Okta Id). By default it is
- *            set to the same user as 'createdBy'
- *        priority:
- *          type: object
- *          properties:
- *            id:
- *              type: integer
- *              description: autoincrements
- *            name:
- *              type: string
- *            color:
- *              type: string
- *              description: This is a hex code in the form '#RRGGBB'
- *        status:
- *          type: object
- *          properties:
- *            id:
- *              type: integer
- *              description: autoincrements
- *            name:
- *              type: string
- *      example:
- *        id: 1
- *        title: 'Broken Radiator Thermostat'
- *        description:
- *          'Radiator Thermo in Apt 224 is broken. Probably needs replaced.'
- *        company:
- *            id: 1
- *            name: 'ACME Property Management'
- *        property:
- *            id: 1
- *            name: 'Lot 24'
- *            address: '2404 Railroad St, Pittsburgh, PA 15222'
- *            imageUrl: 'https://bit.ly/3ajfoTV'
- *            company: 1
- *        images:
- *            - id: 1
- *              url: 'http://path/to/image'
- *              user: '00ulthapbErVUwVJy4x6'
- *              workOrder: 1
- *            - id: 2
- *              url: 'http://path/to/image'
- *              user: '00ulthapbErVUwVJy4x6'
- *              workOrder: 1
- *        createdBy: '00ulthapbErVUwVJy4x6'
- *        assignedTo: '00ulthapbErVUwVJy4x6'
- *        priority:
- *            id: 2
- *            name: 'High'
- *            color: '#F7931B'
- *        status:
- *            id: 1
- *            name: 'Unassigned'
- *        created_at: '2020-12-15T22:46:05.962Z'
- *        updated_at: '2020-12-15T22:46:05.962Z'
- *
- * /workOrders:
+ * /company/{companyId}/orders:
  *  get:
- *    description: Returns a list of workOrders associated with the user
- *    summary: Get a list of workOrders created by or assigned to the user
+ *    description: Returns a list of workOrders associated with the company
+ *    summary: Get a list of workOrders associated with the company limited by user
  *    security:
  *      - okta: []
  *    tags:
  *      - workOrder
+ *      - order
  *    responses:
  *      200:
  *        description: array of workOrders
@@ -161,51 +22,48 @@ const router = express.Router();
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/WorkOrder'
+ *                $ref: '#/components/schemas/workOrder'
  *      401:
  *        $ref: '#/components/responses/UnauthorizedError'
  *      403:
  *        $ref: '#/components/responses/UnauthorizedError'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
  */
-router.get(
-  [
-    '/',
-    '/users?/workOrders?',
-    '/users?/orders?',
-    '/users?/:id/workOrders?',
-    '/users?/:id/orders?',
-    '/company/users?/:id/workOrders?',
-    '/company/users?/:id/orders?',
-    '/company/:companyId/users?/:id/workOrders?',
-    '/company/:companyId/users?/:id/orders?',
-  ],
-  authRequired,
-  function (req, res) {
-    WorkOrders.findByUser(req.profile.id)
+router.get('/', authRequired, function (req, res) {
+  const companyId = req.params.companyId;
+  if (companyId > 0) {
+    WorkOrders.findByCompany(companyId)
+      // WorkOrders.findBy({ 'wo.company': companyId })
+      // WorkOrders.findAll()
       .then((workOrders) => {
-        res.status(200).json(workOrders);
+        if (workOrders.length > 0) {
+          res.status(200).json(workOrders);
+        } else {
+          res.status(404).json({ error: 'No Work Orders found' });
+        }
       })
       .catch((err) => {
-        console.log(err);
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ error: err.message });
+      });
+  } else {
+    WorkOrders.findAll()
+      .then((workOrders) => {
+        if (workOrders.length > 0) {
+          res.status(200).json(workOrders);
+        } else {
+          res.status(404).json({ error: 'No Work Orders found' });
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
       });
   }
-);
+});
 
 /**
  * @swagger
- * components:
- *  parameters:
- *    workOrderId:
- *      name: id
- *      in: path
- *      description: ID of the workOrder to return
- *      required: true
- *      example: 1
- *      schema:
- *        type: integer
- *
- * /workOrder/{id}:
+ * /company/{companyId}/orders/{workOrderId}:
  *  get:
  *    description: Find a single workOrder by ID
  *    summary: Returns a single workOrder
@@ -213,6 +71,7 @@ router.get(
  *      - okta: []
  *    tags:
  *      - workOrder
+ *      - order
  *    parameters:
  *      - $ref: '#/components/parameters/workOrderId'
  *    responses:
@@ -221,108 +80,30 @@ router.get(
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/WorkOrder'
+ *              $ref: '#/components/schemas/workOrder'
  *      401:
  *        $ref: '#/components/responses/UnauthorizedError'
  *      404:
- *        description: 'WorkOrder not found'
+ *        $ref: '#/components/responses/NotFound'
  */
-router.get(
-  [
-    '/:id',
-    '/users?/workOrders?/:id',
-    '/users?/orders?/:id',
-    '/users?/:userId/workOrders?/:id',
-    '/users?/:userId/orders?/:id',
-    '/company/workOrders?/:id',
-    '/company/orders?/:id',
-    '/company/:companyId/workOrders?/:id',
-    '/company/:companyId/orders?/:id',
-    '/company/users?/:userId/workOrders?/:id',
-    '/company/users?/:userId/orders?/:id',
-    '/company/:companyId/users?/:userId/workOrders?/:id',
-    '/company/:companyId/users?/:userId/orders?/:id',
-    '/property/workOrders?/:id',
-    '/property/orders?/:id',
-    '/property/:propertyId/workOrders?/:id',
-    '/property/:propertyId/orders?/:id',
-    '/company/property/:propertyId/workOrders?/:id',
-    '/company/property/:propertyId/orders?/:id',
-    '/company/:companyId/property/:propertyId/workOrders?/:id',
-    '/company/:companyId/property/:propertyId/orders?/:id',
-  ],
-  authRequired,
-  function (req, res) {
-    const id = String(req.params.id);
-    WorkOrders.findById(id)
-      .then((workOrder) => {
-        if (workOrder) {
-          res.status(200).json(workOrder);
-        } else {
-          res.status(404).json({ error: 'WorkOrderNotFound' });
-        }
-      })
-      .catch((err) => {
-        res.status(500).json({ error: err.message });
-      });
-  }
-);
-
-router.get(
-  [
-    '/company/:companyId',
-    '/company/:companyId/workOrders?',
-    '/company/:companyId/orders?',
-  ],
-  function (req, res) {
-    const companyId = req.params.companyId;
-    console.log(companyId);
-    WorkOrders.findBy({ company: companyId })
-      .then((workOrder) => {
-        if (workOrder) {
-          res.status(200).json(workOrder);
-        } else {
-          res.status(404).json({ error: 'WorkOrderNotFound' });
-        }
-      })
-      .catch((err) => {
-        res.status(500).json({ error: err.message });
-      });
-  }
-);
-
-router.get(
-  [
-    '/property/:propertyId',
-    '/property/:propertyId/workOrders?',
-    '/property/:propertyId/orders?',
-    '/company/property/:propertyId',
-    '/company/property/:propertyId/workOrders?',
-    '/company/property/:propertyId/orders?',
-    '/company/:companyId/property/:propertyId',
-    '/company/:companyId/property/:propertyId/workOrders?',
-    '/company/:companyId/property/:propertyId/orders?',
-  ],
-  function (req, res) {
-    const propertyId = req.params.propertyId;
-    console.log(propertyId);
-    WorkOrders.findBy({ property: propertyId })
-      .then((workOrder) => {
-        if (workOrder.length > 0) {
-          res.status(200).json(workOrder);
-        } else {
-          res.status(404).json({ error: 'WorkOrderNotFound' });
-        }
-      })
-      .catch((err) => {
-        res.status(500).json({ error: err.message });
-      });
-  }
-);
+router.get('/:workOrderId', authRequired, function (req, res) {
+  const id = String(req.params.workOrderId);
+  WorkOrders.findById(id)
+    .then((workOrder) => {
+      if (workOrder) {
+        res.status(200).json(workOrder);
+      } else {
+        res.status(404).json({ error: 'Work Order Not Found' });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
 
 /**
  * @swagger
- * /workOrder:
+ * /company/{companyId}/orders:
  *  post:
  *    summary: Add a workOrder
  *    security:
@@ -330,20 +111,20 @@ router.get(
  *    tags:
  *      - workOrder
  *    requestBody:
- *      description: WorkOrder object to to be added
+ *      description: WorkOrder object to to be added (minus id, foreign keys represented by integers or uuid)
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/WorkOrder'
+ *            $ref: '#/components/schemas/workOrder'
  *    responses:
  *      400:
  *        $ref: '#/components/responses/BadRequest'
  *      401:
  *        $ref: '#/components/responses/UnauthorizedError'
  *      404:
- *        description: 'WorkOrder not found'
+ *        $ref: '#/components/responses/NotFound'
  *      200:
- *        description: A workOrder object
+ *        description: The new workOrder object
  *        content:
  *          application/json:
  *            schema:
@@ -354,15 +135,15 @@ router.get(
  *                  description: A message about the result
  *                  example: workOrder created
  *                workOrder:
- *                  $ref: '#/components/schemas/WorkOrder'
+ *                  $ref: '#/components/schemas/workOrder'
  */
 router.post('/', authRequired, async (req, res) => {
   const workOrder = req.body;
   if (workOrder) {
     const id = workOrder.id || 0;
     try {
-      await WorkOrders.findById(id).then(async (pf) => {
-        if (pf == undefined) {
+      await WorkOrders.findById(id).then(async (wo) => {
+        if (wo == undefined) {
           //workOrder not found so lets insert it
           await WorkOrders.create(workOrder).then((workOrder) =>
             res
@@ -381,21 +162,23 @@ router.post('/', authRequired, async (req, res) => {
     res.status(404).json({ message: 'WorkOrder missing' });
   }
 });
+
 /**
  * @swagger
- * /workOrder:
+ * /company/{companyId}/orders/{workOrderId}:
  *  put:
  *    summary: Update a workOrder
  *    security:
  *      - okta: []
  *    tags:
  *      - workOrder
+ *      - order
  *    requestBody:
  *      description: WorkOrder object to to be updated
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/WorkOrder'
+ *            $ref: '#/components/schemas/workOrder'
  *    responses:
  *      401:
  *        $ref: '#/components/responses/UnauthorizedError'
@@ -413,12 +196,15 @@ router.post('/', authRequired, async (req, res) => {
  *                  description: A message about the result
  *                  example: workOrder created
  *                workOrder:
- *                  $ref: '#/components/schemas/WorkOrder'
+ *                  $ref: '#/components/schemas/workOrder'
  */
 router.put(['/', '/:workOrderId'], authRequired, function (req, res) {
   const workOrder = req.body;
-  if (workOrder) {
-    const id = workOrder.id || 0;
+  let id = req.params.workOrderId;
+  if (id === undefined) {
+    id = workOrder.id;
+  }
+  if (workOrder !== undefined && id !== undefined) {
     WorkOrders.findById(id)
       .then((found) => {
         if (found) {
@@ -447,17 +233,24 @@ router.put(['/', '/:workOrderId'], authRequired, function (req, res) {
           error: err.message,
         });
       });
+  } else {
+    res.status(404).json({
+      message: `Could not find workOrder '${id}'`,
+      error: `not found`,
+    });
   }
 });
+
 /**
  * @swagger
- * /workOrder/{id}:
+ * /company/{companyId}/orders/{workOrderId}:
  *  delete:
  *    summary: Remove a workOrder
  *    security:
  *      - okta: []
  *    tags:
  *      - workOrder
+ *      - order
  *    parameters:
  *      - $ref: '#/components/parameters/workOrderId'
  *    responses:
@@ -477,10 +270,10 @@ router.put(['/', '/:workOrderId'], authRequired, function (req, res) {
  *                  description: A message about the result
  *                  example: WorkOrder 3 was deleted.
  *                workOrder:
- *                  $ref: '#/components/schemas/WorkOrder'
+ *                  $ref: '#/components/schemas/workOrder'
  */
-router.delete('/:id', authRequired, function (req, res) {
-  const id = req.params.id;
+router.delete('/:workOrderId', authRequired, function (req, res) {
+  const id = req.params.workOrderId;
   try {
     WorkOrders.findById(id).then((workOrder) => {
       WorkOrders.remove(workOrder.id).then(() => {
@@ -499,3 +292,193 @@ router.delete('/:id', authRequired, function (req, res) {
 });
 
 module.exports = router;
+
+/**
+ * @swagger
+ * components:
+ *  parameters:
+ *    workOrderId:
+ *      name: id
+ *      in: path
+ *      description: ID of the workOrder to return
+ *      required: true
+ *      example: 1
+ *      schema:
+ *        type: integer
+ *    companyId:
+ *      name: id
+ *      in: path
+ *      description: ID of the company to search for workOrders
+ *      required: true
+ *      example: 1
+ *      schema:
+ *        type: integer
+ *  schemas:
+ *    company:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *          description: autoincrements
+ *        name:
+ *          type: string
+ *    property:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *          description: autoincrements
+ *        name:
+ *          type: string
+ *        address:
+ *          type: string
+ *          description: The physical address of the property
+ *        imageUrl:
+ *          type: string
+ *          description: The public URL of an image of the property
+ *        company:
+ *          type: integer
+ *          description: This is a foreign key to Companies.id.
+ *    image:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *          description: autoincrements
+ *        url:
+ *          type: string
+ *          description: The public URL of the image
+ *        user:
+ *          type: string
+ *          description: The userId of the user who uploaded the image
+ *        workOrder:
+ *          type: integer
+ *          description: the id of the workOrder to which the image is attached
+ *      example:
+ *          id: 1
+ *          url: 'http://path/to/image'
+ *          user: '00ulthapbErVUwVJy4x6'
+ *          workOrder: 1
+ *      example2:
+ *          id: 2
+ *          url: 'http://path/to/image'
+ *          user: '00ulthapbErVUwVJy4x6'
+ *    images:
+ *      type: array
+ *      description: an array of image objects
+ *      items:
+ *        $ref: '#/components/schemas/image'
+ *      example:
+ *        [$ref: '#/components/schemas/image/example', $ref: '#/components/schemas/image/example2']
+ *    comment:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *          description: autoincrements
+ *        comment:
+ *          type: string
+ *          description: The body of the comment
+ *        user:
+ *          type: string
+ *          description: The userId of the user who wrote the comment
+ *        workOrder:
+ *          type: integer
+ *          description: the id of the workOrder on which the comment is made
+ *    comments:
+ *      type: array
+ *      description: an array of comment objects
+ *      items:
+ *        $ref: '#/components/schemas/comment'
+ *    priority:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *          description: autoincrements
+ *        name:
+ *          type: string
+ *        color:
+ *          type: string
+ *          description: This is a hex code in the form '#RRGGBB'
+ *      example:
+ *        id: 2
+ *        name: 'High'
+ *        color: '#F7931B'
+ *    status:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *          description: autoincrements
+ *        name:
+ *          type: string
+ *      example:
+ *        id: 1
+ *        name: 'Unassigned'
+ *    workOrder:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *          description: autoincrements
+ *        title:
+ *          type: string
+ *        description:
+ *          type: string
+ *          description: an explanation of what needs done
+ *        created_at:
+ *          type: timestamp
+ *        updated_at:
+ *          type: timestamp
+ *        company:
+ *          $ref: '#/components/schemas/company'
+ *        property:
+ *          $ref: '#/components/schemas/property'
+ *        images:
+ *          $ref: '#/components/schemas/images'
+ *        comments:
+ *          $ref: '#/components/schemas/comments'
+ *        createdBy:
+ *          type: string
+ *          description: This is a foreign key to Profiles.id (Okta Id)
+ *        assignedTo:
+ *          type: string
+ *          description:
+ *            This is a foreign key to Profiles.id (Okta Id). By default it is
+ *            set to the same user as 'createdBy'
+ *        priority:
+ *          $ref: '#/components/schemas/priority'
+ *        status:
+ *          $ref: '#/components/schemas/status'
+ *      example:
+ *        id: 1
+ *        title: 'Broken Radiator Thermostat'
+ *        description:
+ *          'Radiator Thermo in Apt 224 is broken. Probably needs replaced.'
+ *        company:
+ *            id: 1
+ *            name: 'ACME Property Management'
+ *        property:
+ *            id: 1
+ *            name: 'Lot 24'
+ *            address: '2404 Railroad St, Pittsburgh, PA 15222'
+ *            imageUrl: 'https://bit.ly/3ajfoTV'
+ *            company: 1
+ *        images:
+ *          - id: 1
+ *            url: 'http://path/to/image'
+ *            user: '00ulthapbErVUwVJy4x6'
+ *            workOrder: 1
+ *          - id: 2
+ *            url: 'http://path/to/image'
+ *            user: '00ulthapbErVUwVJy4x6'
+ *        createdBy: '00ulthapbErVUwVJy4x6'
+ *        assignedTo: '00ulthapbErVUwVJy4x6'
+ *        priority:
+ *            $ref: '#/components/schemas/priority/example'
+ *        status:
+ *            $ref: '#/components/schemas/status/example'
+ *        created_at: '2020-12-15T22:46:05.962Z'
+ *        updated_at: '2020-12-15T22:46:05.962Z'
+ */

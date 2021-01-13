@@ -40,6 +40,37 @@ const findByUser = async (userId) => {
     .distinctOn('wo.id');
 };
 
+const findByCompany = async (companyId) => {
+  return await db('workOrders')
+    .where({ 'workOrders.company': companyId })
+    .join('profiles as u', 'workOrders.createdBy', 'u.id')
+    .join('profiles as a', 'workOrders.assignedTo', 'a.id')
+    .join('companies as c', 'workOrders.company', 'c.id')
+    .join('properties as p', 'workOrders.property', 'p.id')
+    .join('priority as pr', 'workOrders.priority', 'pr.id')
+    .join('status as s', 'workOrders.status', 's.id')
+    .select(
+      'workOrders.id',
+      'workOrders.title',
+      'workOrders.description',
+      'workOrders.created_at',
+      'workOrders.updated_at',
+      db.raw('row_to_json(s) as status'),
+      db.raw('row_to_json(pr) as priority'),
+      db.raw('row_to_json(c) as co'),
+      db.raw('row_to_json(p) as property'),
+      db.raw(
+        'ARRAY(SELECT row_to_json(images) FROM images WHERE images."workOrder" = "workOrders".id) AS images'
+      ),
+      db.raw(
+        'ARRAY(SELECT row_to_json(comments) FROM comments WHERE comments."workOrder" = "workOrders".id) AS comments'
+      ),
+      db.raw('row_to_json(u) as createdBy'),
+      db.raw('row_to_json(a) as assignedTo')
+    )
+    .distinctOn('workOrders.id');
+};
+
 const findBy = (filter) => {
   return db('workOrders')
     .from('workOrders as wo')
@@ -166,6 +197,7 @@ const remove = async (id) => {
 module.exports = {
   findAll,
   findByUser,
+  findByCompany,
   findBy,
   findById,
   findAllRelated,
