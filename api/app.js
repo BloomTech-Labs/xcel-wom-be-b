@@ -21,6 +21,8 @@ const swaggerUIOptions = {
 //###[  Routers ]###
 const indexRouter = require('./index/indexRouter');
 const profileRouter = require('./profile/profileRouter');
+const propertyRouter = require('./property/propertyRouter');
+const companyRouter = require('./company/companyRouter');
 const userRouter = require('./userCrud/userRouter');
 const workOrderRouter = require('./workOrder/workOrderRouter');
 const app = express();
@@ -57,6 +59,11 @@ app.use('/profiles?', profileRouter);
 app.use('/company/:companyId/orders?', workOrderRouter);
 // `/company/:companyId` connects to the new user router
 app.use('/company', userRouter);
+app.use(
+  ['/property', '/properties', '/*/property', '/*/properties'],
+  propertyRouter
+);
+app.use('/companies', companyRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
