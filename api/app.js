@@ -21,8 +21,9 @@ const swaggerUIOptions = {
 //###[  Routers ]###
 const indexRouter = require('./index/indexRouter');
 const profileRouter = require('./profile/profileRouter');
-const workOrderRouter = require('./workOrder/workOrderRouter');
 
+const userRouter = require('./userCrud/userRouter');
+const workOrderRouter = require('./workOrder/workOrderRouter');
 const app = express();
 
 process.on('unhandledRejection', (reason, p) => {
@@ -55,7 +56,8 @@ app.use('/profiles?', profileRouter);
 // `/company/:companyId/order` or `/company/:companyId/orders` connects to the
 // workOrder router
 app.use('/company/:companyId/orders?', workOrderRouter);
-
+// `/company/:companyId/user` connects to the new user router
+app.use('/company', userRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
