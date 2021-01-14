@@ -194,7 +194,7 @@ router.post('/', authRequired, async (req, res) => {
  *                message:
  *                  type: string
  *                  description: A message about the result
- *                  example: workOrder created
+ *                  example: workOrder updated
  *                workOrder:
  *                  $ref: '#/components/schemas/workOrder'
  */

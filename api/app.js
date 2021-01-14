@@ -57,12 +57,14 @@ app.use('/profiles?', profileRouter);
 // `/company/:companyId/order` or `/company/:companyId/orders` connects to the
 // workOrder router
 app.use('/company/:companyId/orders?', workOrderRouter);
-// `/company/:companyId` connects to the new user router
+// `/company` connects to the new user router
 app.use('/company', userRouter);
+// `/property` connects to the in-progress properties router
 app.use(
   ['/property', '/properties', '/*/property', '/*/properties'],
   propertyRouter
 );
+// `/companies` connects to the in-progress company router
 app.use('/companies', companyRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
