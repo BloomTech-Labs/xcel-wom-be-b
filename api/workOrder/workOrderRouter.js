@@ -321,6 +321,14 @@ module.exports = router;
  *      example: 1
  *      schema:
  *        type: integer
+ *    propertyId:
+ *      name: id
+ *      in: path
+ *      description: ID of the user to return
+ *      required: true
+ *      example: 1
+ *      schema:
+ *        type: integer
  *  schemas:
  *    user:
  *      type: object
@@ -374,6 +382,12 @@ module.exports = router;
  *        company:
  *          type: integer
  *          description: This is a foreign key to Companies.id.
+ *      example:
+ *        id: 1
+ *        name: "Lot 24"
+ *        address: "2404 Railroad St, Pittsburgh, PA 15222"
+ *        imageUrl: "https://bit.ly/3ajfoTV"
+ *        company: 1
  *    image:
  *      type: object
  *      properties:
