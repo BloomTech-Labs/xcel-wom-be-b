@@ -10,11 +10,6 @@ exports.up = (knex) => {
       .onDelete('CASCADE')
       .onUpdate('CASCADE');
     table.integer('property').unsigned();
-    table
-      .foreign('property')
-      .references('properties.id')
-      .onDelete('CASCADE')
-      .onUpdate('CASCADE');
     table.string('createdBy');
     table
       .foreign('createdBy')
@@ -22,11 +17,6 @@ exports.up = (knex) => {
       .onDelete('CASCADE')
       .onUpdate('CASCADE');
     table.string('assignedTo');
-    table
-      .foreign('assignedTo')
-      .references('profiles.id')
-      .onDelete('CASCADE')
-      .onUpdate('CASCADE');
     table.integer('priority').unsigned();
     table
       .foreign('priority')

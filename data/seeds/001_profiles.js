@@ -8,6 +8,8 @@ const profiles = [...new Array(5)].map((i, idx) => ({
     idx === 0
       ? 'Test001 User'
       : `${faker.name.firstName()} ${faker.name.lastName()}`,
+  role: idx === 0 ? 1 : Math.min(idx + 2, 6),
+  company: 1,
 }));
 
 exports.seed = function (knex) {
