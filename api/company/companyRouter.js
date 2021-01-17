@@ -29,6 +29,21 @@ router.get('/:id', authRequired, function (req, res) {
     });
 });
 
+router.get('/:companyId/roles', authRequired, function (req, res) {
+  const id = String(req.params.companyId);
+  Companies.findCompanyRoles(id)
+    .then((roles) => {
+      if (roles.length > 0) {
+        res.status(200).json(roles);
+      } else {
+        res.status(404).json({ error: 'Not Found' });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
+
 router.post('/', authRequired, async (req, res) => {
   const company = req.body;
   if (company) {

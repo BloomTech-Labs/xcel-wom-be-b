@@ -1,10 +1,12 @@
+const genCode = require('../../helpers/genRandomCodes');
+
 const roles = [
-  { name: 'Admin', company: 1, userLevel: 4 },
-  { name: 'Property Manager', company: 1, userLevel: 4 },
-  { name: 'IT', company: 1, userLevel: 4 },
-  { name: 'Supervisor', company: 1, userLevel: 3 },
-  { name: 'Maintenance', company: 1, userLevel: 2 },
-  { name: 'Tenant', company: 1, userLevel: 1 },
+  { name: 'Admin', company: 1, userLevel: 4, code: genCode(6) },
+  { name: 'Property Manager', company: 1, userLevel: 4, code: genCode(6) },
+  { name: 'IT', company: 1, userLevel: 4, code: genCode(6) },
+  { name: 'Supervisor', company: 1, userLevel: 3, code: genCode(6) },
+  { name: 'Maintenance', company: 1, userLevel: 2, code: genCode(6) },
+  { name: 'Tenant', company: 1, userLevel: 1, code: genCode(6) },
 ];
 
 exports.seed = function (knex) {

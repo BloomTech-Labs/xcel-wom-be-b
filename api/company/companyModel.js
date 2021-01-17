@@ -1,4 +1,5 @@
 const db = require('../../data/db-config');
+const genCode = require('../../helpers/genRandomCodes');
 
 const findAll = async () => {
   return await db('companies');
@@ -39,8 +40,28 @@ const findById = async (id) => {
     );
 };
 
+const findCompanyRoles = async (companyId) => {
+  return await db('roles').where({ company: companyId }).select('*');
+};
+
 const create = async (company) => {
-  return db('companies').insert(company).returning('*');
+  const co = await db('companies').insert(company).returning('*');
+  console.log(co);
+  const roles = [
+    { name: 'Admin', company: co.id, userLevel: 4, code: genCode(6) },
+    {
+      name: 'Property Manager',
+      company: co.id,
+      userLevel: 4,
+      code: genCode(6),
+    },
+    { name: 'IT', company: co.id, userLevel: 4, code: genCode(6) },
+    { name: 'Supervisor', company: co.id, userLevel: 3, code: genCode(6) },
+    { name: 'Maintenance', company: co.id, userLevel: 2, code: genCode(6) },
+    { name: 'Tenant', company: co.id, userLevel: 1, code: genCode(6) },
+  ];
+  await db('roles').insert(roles);
+  return co;
 };
 
 const update = (id, company) => {
@@ -60,6 +81,7 @@ module.exports = {
   findAll,
   findBy,
   findById,
+  findCompanyRoles,
   create,
   update,
   remove,
