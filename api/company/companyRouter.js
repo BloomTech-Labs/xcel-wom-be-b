@@ -30,18 +30,35 @@ router.get('/:id', authRequired, function (req, res) {
 });
 
 router.get('/:companyId/roles', authRequired, function (req, res) {
-  const id = String(req.params.companyId);
-  Companies.findCompanyRoles(id)
-    .then((roles) => {
-      if (roles.length > 0) {
-        res.status(200).json(roles);
-      } else {
-        res.status(404).json({ error: 'Not Found' });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
+  const id = req.params.companyId;
+  if (id > 0) {
+    Companies.findCompanyRoles(id)
+      .then((roles) => {
+        if (roles.length > 0) {
+          res.status(200).json(roles);
+        } else {
+          res.status(404).json({ error: 'Not Found' });
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  } else if (process.env.NODE_ENV === 'development') {
+    // on the development server, `/company/0/roles` will give you all roles
+    Companies.findAllRoles()
+      .then((roles) => {
+        if (roles.length > 0) {
+          res.status(200).json(roles);
+        } else {
+          res.status(404).json({ error: 'No roles found' });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ message: err.message });
+        res.status(500).json({ error: err.message });
+      });
+  }
 });
 
 router.post('/', authRequired, async (req, res) => {
@@ -49,14 +66,15 @@ router.post('/', authRequired, async (req, res) => {
   if (company) {
     const id = company.id || 0;
     try {
-      await Companies.findById(id).then(async (pf) => {
-        if (pf == undefined) {
+      await Companies.findById(id).then(async (cp) => {
+        if (cp == undefined) {
           //company not found so lets insert it
-          await Companies.create(company).then((company) =>
+          await Companies.create(company).then((company) => {
+            console.log(company);
             res
               .status(200)
-              .json({ message: 'company created', company: company[0] })
-          );
+              .json({ message: 'company created', company: company[0] });
+          });
         } else {
           res.status(400).json({ message: 'company already exists' });
         }

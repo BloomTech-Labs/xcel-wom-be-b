@@ -44,24 +44,48 @@ const findCompanyRoles = async (companyId) => {
   return await db('roles').where({ company: companyId }).select('*');
 };
 
+const findAllRoles = async () => {
+  return await db('roles').select('*');
+};
+
 const create = async (company) => {
-  const co = await db('companies').insert(company).returning('*');
-  console.log(co);
-  const roles = [
-    { name: 'Admin', company: co.id, userLevel: 4, code: genCode(6) },
-    {
-      name: 'Property Manager',
-      company: co.id,
-      userLevel: 4,
-      code: genCode(6),
-    },
-    { name: 'IT', company: co.id, userLevel: 4, code: genCode(6) },
-    { name: 'Supervisor', company: co.id, userLevel: 3, code: genCode(6) },
-    { name: 'Maintenance', company: co.id, userLevel: 2, code: genCode(6) },
-    { name: 'Tenant', company: co.id, userLevel: 1, code: genCode(6) },
-  ];
-  await db('roles').insert(roles);
-  return co;
+  return await db('companies')
+    .insert(company)
+    .returning('*')
+    .then(async (co) => {
+      console.log(co[0]);
+      const com = co[0];
+      const roles = [
+        { name: 'Admin', company: com.id, userLevel: 4, code: genCode(6) },
+        {
+          name: 'Property Manager',
+          company: com.id,
+          userLevel: 4,
+          code: genCode(6),
+        },
+        { name: 'IT', company: com.id, userLevel: 4, code: genCode(6) },
+        { name: 'Supervisor', company: com.id, userLevel: 3, code: genCode(6) },
+        {
+          name: 'Maintenance',
+          company: com.id,
+          userLevel: 2,
+          code: genCode(6),
+        },
+        { name: 'Tenant', company: com.id, userLevel: 1, code: genCode(6) },
+      ];
+      return await db('roles')
+        .insert(roles)
+        .returning('*')
+        .then((roles) => {
+          console.log(roles);
+          console.log(com);
+          return co;
+          // return db('companies').where({ id: com.id }).select('*');
+        });
+    });
+  // .then(async (roles) => {
+  //   return await db('companies').where({ id: roles[0].company }).select('*');
+  // });
 };
 
 const update = (id, company) => {
@@ -82,6 +106,7 @@ module.exports = {
   findBy,
   findById,
   findCompanyRoles,
+  findAllRoles,
   create,
   update,
   remove,
