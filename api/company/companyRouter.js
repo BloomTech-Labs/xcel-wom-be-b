@@ -103,6 +103,19 @@ router.post('/', authRequired, async (req, res) => {
   }
 });
 
+router.post('/:companyId/roles?', authRequired, async (req, res) => {
+  const role = req.body;
+  role.company = req.params.companyId;
+  try {
+    await Companies.createRole(role).then((role) => {
+      res.status(200).json({ message: 'role created', role: role[0] });
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: e.message });
+  }
+});
+
 router.put('/', authRequired, function (req, res) {
   const company = req.body;
   if (company) {

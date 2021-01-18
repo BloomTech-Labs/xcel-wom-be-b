@@ -92,6 +92,11 @@ const create = async (company) => {
   // });
 };
 
+const createRole = async (role) => {
+  role.code = genCode(6);
+  return db('roles').insert(role).returning('*');
+};
+
 const update = (id, company) => {
   console.log(company);
   return db('companies')
@@ -113,6 +118,7 @@ module.exports = {
   findAllRoles,
   findRoleByCode,
   create,
+  createRole,
   update,
   remove,
 };
