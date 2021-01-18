@@ -48,6 +48,10 @@ const findAllRoles = async () => {
   return await db('roles').select('*');
 };
 
+const findRoleByCode = async (code) => {
+  return await db('roles').where({ code: code }).select('*').first();
+};
+
 const create = async (company) => {
   return await db('companies')
     .insert(company)
@@ -107,6 +111,7 @@ module.exports = {
   findById,
   findCompanyRoles,
   findAllRoles,
+  findRoleByCode,
   create,
   update,
   remove,
