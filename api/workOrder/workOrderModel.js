@@ -163,6 +163,48 @@ const remove = async (id) => {
   return await db('workOrders').where({ id }).del();
 };
 
+const getComments = (workOrderId) => {
+  return db('comments')
+    .from('comments as c')
+    .where({ workOrder: workOrderId })
+    .join('profiles as u', 'c.author', 'u.id')
+    .select('c.id', 'c.comment', 'c.workOrder', 'u.id', 'u.name')
+    .distinctOn('c.id');
+};
+
+const addComment = (comment) => {
+  return db('comments').insert(comment).returning('*');
+};
+
+const updateComment = (id, comment) => {
+  return db('comments')
+    .where({ id: id })
+    .first()
+    .update(comment)
+    .returning('*');
+};
+
+const removeComment = async (id) => {
+  return await db('comments').where({ id }).del();
+};
+
+const getImages = (workOrderId) => {
+  return db('images')
+    .from('images as i')
+    .where({ workOrder: workOrderId })
+    .join('profiles as u', 'i.user', 'u.id')
+    .select('i.id', 'i.url', 'i.workOrder', 'u.id', 'u.name')
+    .distinctOn('i.id');
+};
+
+const addImage = (image) => {
+  return db('images').insert(image).returning('*');
+};
+
+const removeImage = async (id) => {
+  return await db('images').where({ id }).del();
+};
+
 module.exports = {
   findAll,
   findByUser,
@@ -172,4 +214,11 @@ module.exports = {
   create,
   update,
   remove,
+  getComments,
+  addComment,
+  updateComment,
+  removeComment,
+  getImages,
+  addImage,
+  removeImage,
 };

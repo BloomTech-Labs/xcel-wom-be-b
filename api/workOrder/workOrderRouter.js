@@ -498,4 +498,101 @@ router.delete('/:id', authRequired, function (req, res) {
   }
 });
 
+router.get('/:id/comments?', authRequired, function (req, res) {
+  const workOrderId = req.params.id;
+  WorkOrders.getComments(workOrderId)
+    .then((comments) => {
+      res.status(200).json(comments);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: err.message });
+    });
+});
+
+router.post('/:id/comments?', authRequired, function (req, res) {
+  const comment = req.body;
+  try {
+    WorkOrders.addComment(comment).then((comment) =>
+      res.status(200).json({ message: 'comment added', comment: comment[0] })
+    );
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: e.message });
+  }
+});
+
+router.put('/:id/comments?/:commentId', authRequired, function (req, res) {
+  const commentId = req.params.commentId;
+  const comment = req.body;
+  try {
+    WorkOrders.updateComment(commentId, comment).then((updated) => {
+      res.status(200).json({ message: 'comment updated', comment: updated[0] });
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: `Could not update comment '${commentId}'`,
+      error: err.message,
+    });
+  }
+});
+
+router.delete('/:id/comments?/:commentId', authRequired, function (req, res) {
+  const id = req.params.commentId;
+  try {
+    WorkOrders.removeComment(id).then((comment) => {
+      res.status(200).json({
+        message: `comment '${id}' was deleted.`,
+        comment: comment,
+      });
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: `Could not delete comment with ID: ${id}`,
+      error: err.message,
+    });
+  }
+});
+
+router.get('/:id/images?', authRequired, function (req, res) {
+  const workOrderId = req.params.id;
+  WorkOrders.getImages(workOrderId)
+    .then((images) => {
+      res.status(200).json(images);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: err.message });
+    });
+});
+
+router.post('/:id/images?', authRequired, function (req, res) {
+  const image = req.body;
+  try {
+    WorkOrders.addImage(image).then((image) =>
+      res.status(200).json({ message: 'image added', comment: image[0] })
+    );
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: e.message });
+  }
+});
+
+router.delete('/:id/images?/:imageId', authRequired, function (req, res) {
+  const id = req.params.imageId;
+  try {
+    WorkOrders.removeImage(id).then((image) => {
+      res.status(200).json({
+        message: `image '${id}' was deleted.`,
+        image: image,
+      });
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: `Could not delete image with ID: ${id}`,
+      error: err.message,
+    });
+  }
+});
+
 module.exports = router;
