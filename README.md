@@ -2,32 +2,29 @@
 
 For steps on how to work with this repository [please see here](https://docs.labs.lambdaschool.com/labs-spa-starter/)
 
-🚫 Note: All lines that start with 🚫 are instructions and should be deleted before this is posted to your first Pull-Request is merged. This is intended to be a guideline. Feel free to add your own flare to it.
-
 # Project
 
-You can find the deployed project at [🚫URL NAME GOES HERE](🚫copy and paste URL here).
+You can find the deployed API at [https://xcel-wom-api-b.herokuapp.com]
 
 ## Contributors
 
-🚫Add contributor info below, make sure add images and edit the social links for each member. Add to or delete these place-holders as needed
-
-|                                                      [Student 1](https://github.com/)                                                       |                                                       [Student 2](https://github.com/)                                                        |                                                      [Student 3](https://github.com/)                                                       |                                                       [Student 4](https://github.com/)                                                        |                                                      [Student 5](https://github.com/)                                                       |
-| :-----------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------: |
-| [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-male.png" width = "200" />](https://github.com/) | [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-female.png" width = "200" />](https://github.com/) | [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-male.png" width = "200" />](https://github.com/) | [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-female.png" width = "200" />](https://github.com/) | [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-male.png" width = "200" />](https://github.com/) |
-|                                [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/)                                |                            [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/honda0306)                             |                          [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Mister-Corn)                           |                          [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/NandoTheessen)                           |                           [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/wvandolah)                            |
-|                [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)                |                 [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)                 |                [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)                |                 [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)                 |                [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)                |
+|[Jose Sustaita](https://github.com/JoseSustaita) |[ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/josesustaita/)| <br> [<img src="https://avatars3.githubusercontent.com/u/8072587?s=400&u=2d285e09f8394ea773338042a6530393b72c468a&v=4" width = "200" />](https://github.com/JoseSustaita)<br>
+:---------------------------:<br><br>
+[Matthew Taylor](https://github.com/MTaylor-tech) |[ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/taylorjadepalmer/)| <br> [<img src="https://avatars1.githubusercontent.com/u/3969757?s=460&u=dff67932da9702cf48b0868eb3ca7ea6a0563ca0&v=4" width = "200" />](https://github.com/MTaylor-tech)<br>
+:---------------------------:<br><br>
+[Idong Essien](https://github.com/idongessien) |[ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/idongessien/)| <br> [<img src="https://avatars1.githubusercontent.com/u/22062405?s=460&u=f8f768b5e18a50bfac5e94932028fcef08b0e5f3&v=4" width = "200" />](https://github.com/idongessien) <br>
+:---------------------------:<br><br>
+[Devin Ong](https://github.com/hoangvu71) |[ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)| <br> [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-male.png" width = "200" />](https://github.com/hoangvu71) <br>
+:---------------------------:<br><br>
+[Jonathan Chiaverini](https://github.com/JC8747) |[ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/jonathanchiaverini/)|<br> [<img src="https://avatars1.githubusercontent.com/u/55720706?s=460&u=bf12482f2a0eac9f2c5dcebac048d568027aa057&v=4" width = "200" />](https://github.com/JC8747) <br>
+:---------------------------:
 
 <br>
 <br>
-
-🚫 Optional examples of using images with links for your tech stack, make sure to change these to fit your project
 
 ![MIT](https://img.shields.io/packagist/l/doctrine/orm.svg)
 ![node express](https://img.shields.io/node/v-lts/express)
 ![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)
-
-🚫 more info on using badges [here](https://github.com/badges/shields)
 
 ### Key Features
 
@@ -37,41 +34,98 @@ You can find the deployed project at [🚫URL NAME GOES HERE](🚫copy and paste
 - feature four
 - feature five
 
-#### Back end deployed to `🚫insert service here`
+#### Back end deployed to `Heroku`
 
-#### [Front end](🚫link to back end repo here) built using:
+#### [Front end](https://github.com/Lambda-School-Labs/xcel-wom-fe-b) built using: ![React](https://img.shields.io/badge/react-v16.7.0--alpha.2-blue.svg)
 
-#### 🚫 back end framework and key libraries go here
+#### Back End built using:
 
-- point one
-- point two
-- point three
+- node.js
+- express
+- knex
+- postgres
 
-🚫 List the rest of the back end end features and libraries in the same format as the framework above
+# API Endpoints
 
-# APIs
+### Work Order Router:
 
-## Authentication API here
+`/company/{companyId}/order` or `/company/{companyId}/orders`
 
-🚫Replace text below with a description and link to your API swagger docs
+- `/company/{companyId}/orders`
+  - GET: returns array of WOs for company (404 if none)
+  - POST: add a new WO (returns msg & new WO)
+- `/company/{companyId}/order/{orderId}`
+  - GET: returns the specified WO
+  - PUT: update the specified WO (returns msg & updated WO)
+  - DELETE: remove the specified WO (returns msg & deleted WO)
+- `/company/{companyId}/order/{orderId}/comments` (needs docs)
+  - GET: returns array of comments for WO, empty array if none
+  - POST: add comment (returns msg & new comment)
+- `/company/{companyId}/order/{orderId}/comment/{commentId}` (nd)
+  - PUT: update the comment (returns msg & updated comment)
+  - DELETE: remove the comment (returns msg & deleted comment)
+- `/company/{companyId}/order/{orderId}/images` (nd)
+  - GET: returns array of images for WO, empty array if none
+  - POST: add image (returns msg & new image)
+- `/company/{companyId}/order/{orderId}/image/{imageId}` (nd)
+  - DELETE: remove the image (returns msg & deleted image)
 
-Water's like me. It's laaazy ... Boy, it always looks for the easiest way to do things A little happy sunlight shining through there. Let all these little things happen. Don't fight them. Learn to use them. Even the worst thing we can do here is good.
+### User Router:
 
-## Payment API here
+`/company`
 
-🚫Replace text below with a description of the API or delete
+- `/company/{companyId}`
+  - GET: returns the company
+- `/company/{companyId}/users`
+  - GET: return array of users in company
+- `/company/{companyId}/user/{userId}`
+  - GET: return specified user
+  - DELETE: remove specified user (returns msg)
+- `/company/{companyId}/user` (pl)
+  - POST: add a user (returns new user)
+- `/company/user/{userId}` (agg)
+- PUT: update the user (returns msg & updated user)
+- Still awaiting review & merge:
+- `/company/user/{code}`
+  - POST: creates a new user, putting them into the company and role specified by the code
+- `/company/new`
+  - POST: expects `req.body` to contain both a user object and a company object. Creates the company, creates the user, adding the user as the 'Admin' of the new company. (I didn't know what path to put this on, so it can be changed if the team thinks of a better endpoint. Aside: we should review all the endpoints after the functionality is finalized and make sure they are useful labels.)
+- `/company/user/{userId}/{code}`
+  - PUT: adds the user with the specified userId to the company and role associated with the code.
 
-This is the way you take out your flustrations. Get away from those little Christmas tree things we used to make in school. Isn't it fantastic that you can change your mind and create all these happy things? Everything's not great in life, but we can still find beauty in it.
+### Company Router:
 
-## Misc API here
+`/companies`
 
-🚫Replace text below with a description of the API
+- `/companies`
+  - GET: returns array of all companies
+  - POST: add a company, set up roles & codes (returns msg & new company) (mk sr rtns r+c)
+  - PUT: update company (returns msg & updated company) (nfx)
+- `/companies/{companyId}`
+  - GET: returns the specified company
+  - PUT: update specified company (returns msg & updated company)
+  - DELETE: remove the company (returns msg & deleted company)
+- Still awaiting review & merge:
+  - `/companies/{companyId}/roles`
+    - GET: returns an array of the company's roles, including registration codes
+  - `/companies/roles/{code}`
+    - GET: returns the role associated with the code
 
-You can do anything your heart can imagine. In life you need colors. This is where you take out all your hostilities and frustrations. It's better than kicking the puppy dog around and all that so. I'm sort of a softy, I couldn't shoot Bambi except with a camera. Trees get lonely too, so we'll give him a little friend. We'll lay all these little funky little things in there.
+### Property Router:
+
+`/property` or `/properties`
+
+- `/properties`
+  - GET: returns array of all properties
+  - POST: add a property (returns msg & new property)
+  - PUT: update a property (returns msg & updated property) (nfx)
+- `/property/{propertyId}`
+  - GET: returns the specified property (404 if not found)
+  - DELETE: remove the property (returns msg & deleted property)
 
 ## Getting Started
 
-### Enviornment Variables
+### Environment Variables
 
 - `PORT` - API port (optional, but helpful with FE running as well)
   - The following ports are whitelisted for use with okta
@@ -82,26 +136,26 @@ You can do anything your heart can imagine. In life you need colors. This is whe
 - `OKTA_URL_ISSUER` - The complete issuer URL for verifying okta access tokens. `https://example.okta.com/oauth2/default`
 - `OKTA_CLIENT_ID` - the okta client ID.
 
-See `.env` file for example values
+See `.env.sample` file for example values
 
 ### Setup postgres
 
 There are 3 options to get postgresql installed locally [Choose one]:
 
 1. Use docker. [Install](https://docs.docker.com/get-docker/) for your platform
-    - run: `docker-compose up -d` to start up the postgresql database and pgadmin.
-    - Open a browser to [pgadmin](http://localhost:5050/) and you should see the Dev server already defined.
-    - If you need to start over you will need to delete the folder `$ rm -rf ./data/pg` as this is where all of the server data is stored.
-      - if the database `api-dev` was not created then start over.
+   - run: `docker-compose up -d` to start up the postgresql database and pgadmin.
+   - Open a browser to [pgadmin](http://localhost:5050/) and you should see the Dev server already defined.
+   - If you need to start over you will need to delete the folder `$ rm -rf ./data/pg` as this is where all of the server data is stored.
+     - if the database `api-dev` was not created then start over.
 2. Download and install postgresql directly from the [main site](https://www.postgresql.org/download/)
-    - make note of the port, username and password you use to setup the database.
-    - Connect your client to the server manually using the values previously mentioned
-    - You will need to create a database manually using a client.
-    - Make sure to update the DATABASE_URL connection string with the values for username/password, databasename and server port (if not 5432).
+   - make note of the port, username and password you use to setup the database.
+   - Connect your client to the server manually using the values previously mentioned
+   - You will need to create a database manually using a client.
+   - Make sure to update the DATABASE_URL connection string with the values for username/password, databasename and server port (if not 5432).
 3. Setup a free account at [ElephantSQL](https://www.elephantsql.com/plans.html)
-    - Sign up for a free `Tiney Turtle` plan
-    - copy the URL to the DATABASE_URL .env variable
-    - make sure to add `?ssl=true` to the end of this url
+   - Sign up for a free `Tiney Turtle` plan
+   - copy the URL to the DATABASE_URL .env variable
+   - make sure to add `?ssl=true` to the end of this url
 
 ### Setup the application
 
@@ -150,4 +204,4 @@ Remember that this project is licensed under the MIT license, and by submitting 
 
 ## Documentation
 
-See [Backend Documentation](🚫*link to your backend API SWAGGER DOCS here*) for details on the backend of our project.
+See [Backend Documentation](https://xcel-wom-api-b.herokuapp.com/api-docs/) for details on the backend of our project.
