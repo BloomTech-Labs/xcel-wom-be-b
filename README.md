@@ -1,6 +1,6 @@
-# xcel-wom
+# Xcel Work Order Management
 
-For steps on how to work with this repository [please see here](https://docs.labs.lambdaschool.com/labs-spa-starter/)
+A React app and Node/Express backend to help property managers log and track work orders at their buildings.
 
 # Project
 
@@ -26,14 +26,6 @@ You can find the deployed API at [https://xcel-wom-api-b.herokuapp.com]
 ![node express](https://img.shields.io/node/v-lts/express)
 ![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)
 
-### Key Features
-
-- feature one
-- feature two
-- feature three
-- feature four
-- feature five
-
 #### Back end deployed to `Heroku`
 
 #### [Front end](https://github.com/Lambda-School-Labs/xcel-wom-fe-b) built using: ![React](https://img.shields.io/badge/react-v16.7.0--alpha.2-blue.svg)
@@ -47,81 +39,8 @@ You can find the deployed API at [https://xcel-wom-api-b.herokuapp.com]
 
 # API Endpoints
 
-### Work Order Router:
-
-`/company/{companyId}/order` or `/company/{companyId}/orders`
-
-- `/company/{companyId}/orders`
-  - GET: returns array of WOs for company (404 if none)
-  - POST: add a new WO (returns msg & new WO)
-- `/company/{companyId}/order/{orderId}`
-  - GET: returns the specified WO
-  - PUT: update the specified WO (returns msg & updated WO)
-  - DELETE: remove the specified WO (returns msg & deleted WO)
-- `/company/{companyId}/order/{orderId}/comments` (needs docs)
-  - GET: returns array of comments for WO, empty array if none
-  - POST: add comment (returns msg & new comment)
-- `/company/{companyId}/order/{orderId}/comment/{commentId}` (nd)
-  - PUT: update the comment (returns msg & updated comment)
-  - DELETE: remove the comment (returns msg & deleted comment)
-- `/company/{companyId}/order/{orderId}/images` (nd)
-  - GET: returns array of images for WO, empty array if none
-  - POST: add image (returns msg & new image)
-- `/company/{companyId}/order/{orderId}/image/{imageId}` (nd)
-  - DELETE: remove the image (returns msg & deleted image)
-
-### User Router:
-
-`/company`
-
-- `/company/{companyId}`
-  - GET: returns the company
-- `/company/{companyId}/users`
-  - GET: return array of users in company
-- `/company/{companyId}/user/{userId}`
-  - GET: return specified user
-  - DELETE: remove specified user (returns msg)
-- `/company/{companyId}/user` (pl)
-  - POST: add a user (returns new user)
-- `/company/user/{userId}` (agg)
-- PUT: update the user (returns msg & updated user)
-- Still awaiting review & merge:
-- `/company/user/{code}`
-  - POST: creates a new user, putting them into the company and role specified by the code
-- `/company/new`
-  - POST: expects `req.body` to contain both a user object and a company object. Creates the company, creates the user, adding the user as the 'Admin' of the new company. (I didn't know what path to put this on, so it can be changed if the team thinks of a better endpoint. Aside: we should review all the endpoints after the functionality is finalized and make sure they are useful labels.)
-- `/company/user/{userId}/{code}`
-  - PUT: adds the user with the specified userId to the company and role associated with the code.
-
-### Company Router:
-
-`/companies`
-
-- `/companies`
-  - GET: returns array of all companies
-  - POST: add a company, set up roles & codes (returns msg & new company) (mk sr rtns r+c)
-  - PUT: update company (returns msg & updated company) (nfx)
-- `/companies/{companyId}`
-  - GET: returns the specified company
-  - PUT: update specified company (returns msg & updated company)
-  - DELETE: remove the company (returns msg & deleted company)
-- Still awaiting review & merge:
-  - `/companies/{companyId}/roles`
-    - GET: returns an array of the company's roles, including registration codes
-  - `/companies/roles/{code}`
-    - GET: returns the role associated with the code
-
-### Property Router:
-
-`/property` or `/properties`
-
-- `/properties`
-  - GET: returns array of all properties
-  - POST: add a property (returns msg & new property)
-  - PUT: update a property (returns msg & updated property) (nfx)
-- `/property/{propertyId}`
-  - GET: returns the specified property (404 if not found)
-  - DELETE: remove the property (returns msg & deleted property)
+- [Full API Documentation](https://xcel-wom-api-b.herokuapp.com/api-docs/)
+- [Simple API Documentation](./api.md)
 
 ## Getting Started
 
@@ -204,4 +123,4 @@ Remember that this project is licensed under the MIT license, and by submitting 
 
 ## Documentation
 
-See [Backend Documentation](https://xcel-wom-api-b.herokuapp.com/api-docs/) for details on the backend of our project.
+See [Full Backend Documentation](https://xcel-wom-api-b.herokuapp.com/api-docs/) or [Simple API Documentation](./api.md) for details on the backend of our project.
