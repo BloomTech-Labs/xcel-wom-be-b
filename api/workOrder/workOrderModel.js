@@ -151,7 +151,7 @@ const getComments = (workOrderId) => {
     .from('comments as c')
     .where({ workOrder: workOrderId })
     .join('profiles as u', 'c.author', 'u.id')
-    .select('c.id', 'c.comment', 'c.workOrder', 'u.id', 'u.name')
+    .select('c.id', 'c.comment', 'c.workOrder', 'c.author', 'u.name')
     .distinctOn('c.id');
 };
 
