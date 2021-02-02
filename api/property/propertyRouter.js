@@ -26,62 +26,6 @@ const router = express.Router();
  *        $ref: '#/components/responses/UnauthorizedError'
  *      403:
  *        $ref: '#/components/responses/UnauthorizedError'
- */
-router.get('/', authRequired, function (req, res) {
-  Properties.findAll()
-    .then((properties) => {
-      res.status(200).json(properties);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ message: err.message });
-    });
-});
-
-/**
- * @swagger
- * /properties/{propertyId}:
- *  get:
- *    description: Returns the specified property object
- *    summary: Get a specified property object
- *    security:
- *      - okta: []
- *    tags:
- *      - property
- *    parameters:
- *      - $ref: '#/components/parameters/propertyId'
- *    responses:
- *      200:
- *        description: property object
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/property'
- *      401:
- *        $ref: '#/components/responses/UnauthorizedError'
- *      403:
- *        $ref: '#/components/responses/UnauthorizedError'
- *      404:
- *        $ref: '#/components/responses/NotFound'
- */
-router.get('/:id', authRequired, function (req, res) {
-  const id = String(req.params.id);
-  Properties.findById(id)
-    .then((property) => {
-      if (property) {
-        res.status(200).json(property);
-      } else {
-        res.status(404).json({ error: 'PropertyNotFound' });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
-});
-
-/**
- * @swagger
- * /properties:
  *  post:
  *    summary: Add a property
  *    security:
@@ -115,31 +59,44 @@ router.get('/:id', authRequired, function (req, res) {
  *                property:
  *                  $ref: '#/components/schemas/property'
  */
-router.post('/', authRequired, async (req, res) => {
-  const property = req.body;
-  if (property) {
-    const id = property.id || 0;
-    try {
-      await Properties.findById(id).then(async (pf) => {
-        if (pf == undefined) {
-          //property not found so lets insert it
-          await Properties.create(property).then((property) =>
-            res
-              .status(200)
-              .json({ message: 'property created', property: property[0] })
-          );
-        } else {
-          res.status(400).json({ message: 'property already exists' });
-        }
+router
+  .route('/')
+  .all(authRequired)
+  .get(function (req, res) {
+    Properties.findAll()
+      .then((properties) => {
+        res.status(200).json(properties);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ message: err.message });
       });
-    } catch (e) {
-      console.error(e);
-      res.status(500).json({ message: e.message });
+  })
+  .post(async function (req, res) {
+    const property = req.body;
+    if (property) {
+      const id = property.id || 0;
+      try {
+        await Properties.findById(id).then(async (pf) => {
+          if (pf == undefined) {
+            //property not found so lets insert it
+            await Properties.create(property).then((property) =>
+              res
+                .status(200)
+                .json({ message: 'property created', property: property[0] })
+            );
+          } else {
+            res.status(400).json({ message: 'property already exists' });
+          }
+        });
+      } catch (e) {
+        console.error(e);
+        res.status(500).json({ message: e.message });
+      }
+    } else {
+      res.status(404).json({ message: 'Property missing' });
     }
-  } else {
-    res.status(404).json({ message: 'Property missing' });
-  }
-});
+  });
 
 /**
  * @swagger
@@ -174,38 +131,28 @@ router.post('/', authRequired, async (req, res) => {
  *                  example: property updated
  *                company:
  *                  $ref: '#/components/schemas/property'
- */
-router.put('/', authRequired, function (req, res) {
-  const property = req.body;
-  if (property) {
-    const id = property.id || 0;
-    Properties.findById(id)
-      .then(
-        Properties.update(id, property)
-          .then((updated) => {
-            res
-              .status(200)
-              .json({ message: 'property created', property: updated[0] });
-          })
-          .catch((err) => {
-            res.status(500).json({
-              message: `Could not update property '${id}'`,
-              error: err.message,
-            });
-          })
-      )
-      .catch((err) => {
-        res.status(404).json({
-          message: `Could not find property '${id}'`,
-          error: err.message,
-        });
-      });
-  }
-});
-
-/**
- * @swagger
- * /properties/{propertyId}:
+ *  get:
+ *    description: Returns the specified property object
+ *    summary: Get a specified property object
+ *    security:
+ *      - okta: []
+ *    tags:
+ *      - property
+ *    parameters:
+ *      - $ref: '#/components/parameters/propertyId'
+ *    responses:
+ *      200:
+ *        description: property object
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/property'
+ *      401:
+ *        $ref: '#/components/responses/UnauthorizedError'
+ *      403:
+ *        $ref: '#/components/responses/UnauthorizedError'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
  *  delete:
  *    summary: Remove a property
  *    security:
@@ -233,23 +180,73 @@ router.put('/', authRequired, function (req, res) {
  *                property:
  *                  $ref: '#/components/schemas/property'
  */
-router.delete('/:id', authRequired, function (req, res) {
-  const id = req.params.id;
-  try {
-    Properties.findById(id).then((property) => {
-      Properties.remove(property.id).then(() => {
-        res.status(200).json({
-          message: `Property '${id}' was deleted.`,
-          property: property,
+router.put(['/', '/:id'], authRequired, function (req, res) {
+  const property = req.body;
+  if (property) {
+    let id = 0;
+    if (req.params.id) {
+      id = req.params.id;
+    } else if (property.id) {
+      id = property.id;
+    }
+    Properties.findById(id)
+      .then(
+        Properties.update(id, property)
+          .then((updated) => {
+            res
+              .status(200)
+              .json({ message: 'property updated', property: updated[0] });
+          })
+          .catch((err) => {
+            res.status(500).json({
+              message: `Could not update property '${id}'`,
+              error: err.message,
+            });
+          })
+      )
+      .catch((err) => {
+        res.status(404).json({
+          message: `Could not find property '${id}'`,
+          error: err.message,
         });
       });
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: `Could not delete property with ID: ${id}`,
-      error: err.message,
-    });
   }
 });
+
+router
+  .route('/:id')
+  .all(authRequired)
+  .get(function (req, res) {
+    const id = String(req.params.id);
+    Properties.findById(id)
+      .then((property) => {
+        if (property) {
+          res.status(200).json(property);
+        } else {
+          res.status(404).json({ error: 'PropertyNotFound' });
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  })
+  .delete(function (req, res) {
+    const id = req.params.id;
+    try {
+      Properties.findById(id).then((property) => {
+        Properties.remove(property.id).then(() => {
+          res.status(200).json({
+            message: `Property '${id}' was deleted.`,
+            property: property,
+          });
+        });
+      });
+    } catch (err) {
+      res.status(500).json({
+        message: `Could not delete property with ID: ${id}`,
+        error: err.message,
+      });
+    }
+  });
 
 module.exports = router;
