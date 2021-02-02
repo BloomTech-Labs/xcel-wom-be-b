@@ -21,11 +21,10 @@ const swaggerUIOptions = {
 //###[  Routers ]###
 const indexRouter = require('./index/indexRouter');
 const profileRouter = require('./profile/profileRouter');
-const propertyRouter = require('./property/propertyRouter');
-const companyRouter = require('./company/companyRouter');
-
 const userRouter = require('./userCrud/userRouter');
 const workOrderRouter = require('./workOrder/workOrderRouter');
+const companyRouter = require('./company/companyRouter');
+const propertyRouter = require('./property/propertyRouter');
 const app = express();
 
 process.on('unhandledRejection', (reason, p) => {
@@ -51,30 +50,22 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // application routes
+// `/` can be used to check that server is working
 app.use('/', indexRouter);
-app.use(['/profile', '/profiles'], profileRouter);
+// `/profile` or `/profiles` connects to the old user profile router
+app.use('/profiles?', profileRouter);
+// `/company/:companyId/order` or `/company/:companyId/orders` connects to the
+// workOrder router
+app.use('/company/:companyId/orders?', workOrderRouter);
+// `/company` connects to the new user router
+app.use('/company', userRouter);
+// `/property` connects to the in-progress properties router
 app.use(
   ['/property', '/properties', '/*/property', '/*/properties'],
   propertyRouter
 );
+// `/companies` connects to the in-progress company router
 app.use('/companies', companyRouter);
-app.use('/company', userRouter);
-app.use(
-  [
-    '/workOrders?',
-    '/*/workOrders?',
-    '/*/*/workOrders?',
-    '/*/*/*/workOrders?',
-    '/*/*/*/*/workOrders?',
-    '/orders?',
-    '/*/orders?',
-    '/*/*/orders?',
-    '/*/*/*/orders?',
-    '/*/*/*/*/orders?',
-  ],
-  workOrderRouter
-);
-
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

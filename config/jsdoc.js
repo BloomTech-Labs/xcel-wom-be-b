@@ -19,6 +19,10 @@ module.exports = {
         name: 'profile',
         description: 'Operations for profile',
       },
+      {
+        name: 'workOrder',
+        description: 'Operations for Work Orders',
+      },
     ],
     components: {
       securitySchemes: {

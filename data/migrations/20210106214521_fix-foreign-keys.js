@@ -8,14 +8,6 @@ exports.up = function (knex) {
         .onDelete('CASCADE')
         .onUpdate('CASCADE');
     })
-    .table('profiles', function (table) {
-      table.dropForeign('company');
-      table
-        .foreign('company')
-        .references('companies.id')
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE');
-    })
     .table('properties', function (table) {
       table.dropForeign('company');
       table
@@ -31,21 +23,9 @@ exports.up = function (knex) {
         .references('companies.id')
         .onDelete('CASCADE')
         .onUpdate('CASCADE');
-      table.dropForeign('property');
-      table
-        .foreign('property')
-        .references('properties.id')
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE');
       table.dropForeign('createdBy');
       table
         .foreign('createdBy')
-        .references('profiles.id')
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE');
-      table.dropForeign('assignedTo');
-      table
-        .foreign('assignedTo')
         .references('profiles.id')
         .onDelete('CASCADE')
         .onUpdate('CASCADE');
